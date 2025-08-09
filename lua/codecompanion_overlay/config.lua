@@ -1,20 +1,52 @@
 local M = {}
 
 function M.setup()
-  require("codecompanion").setup({
+  require('codecompanion').setup {
     adapters = {
       perplexity = function()
-        return require("codecompanion_overlay.adapters.perplexity")
+        return require 'codecompanion_overlay.adapters.perplexity'
       end,
       gemini = function()
-        return require("codecompanion.adapters").extend("gemini", {
+        return require('codecompanion.adapters').extend('gemini', {
           env = {
             api_key = 'cmd:op read op://Employee/gemini_api_key/password --no-newline',
           },
           schema = {
             model = {
-              default = "gemini-2.5-pro",
+              default = 'gemini-2.5-pro',
             },
+          },
+        })
+      end,
+      openai_gpt5 = function()
+        return require('codecompanion.adapters').extend('openai', {
+          env = {
+            api_key = 'cmd:op read op://Personal/OpenAI API key NeovimCodeCompanion/password --no-newline',
+          },
+          schema = {
+            model = { default = 'gpt-5' },
+          },
+        })
+      end,
+
+      openai_gpt5_mini = function()
+        return require('codecompanion.adapters').extend('openai', {
+          env = {
+            api_key = 'cmd:op read op://Personal/OpenAI API key NeovimCodeCompanion/password --no-newline',
+          },
+          schema = {
+            model = { default = 'gpt-5-mini' },
+          },
+        })
+      end,
+
+      openai_gpt5_nano = function()
+        return require('codecompanion.adapters').extend('openai', {
+          env = {
+            api_key = 'cmd:op read op://Personal/OpenAI API key NeovimCodeCompanion/password --no-newline',
+          },
+          schema = {
+            model = { default = 'gpt-5-nano' },
           },
         })
       end,
@@ -22,42 +54,43 @@ function M.setup()
     display = {
       chat = {
         icons = {
-          buffer_pin = " ",
-          buffer_watch = "👀 ",
+          buffer_pin = ' ',
+          buffer_watch = '👀 ',
         },
-        window = { layout = "vertical" },
+        window = { layout = 'vertical' },
       },
     },
     prompt_library = {
-      ["Commit Changes"] = require("codecompanion_overlay.prompts.commit_changes"),
+      ['Commit Changes'] = require 'codecompanion_overlay.prompts.commit_changes',
     },
     strategies = {
       chat = {
-        adapter = "gemini",
+        adapter = 'gemini',
         keymaps = {
-          clear = { modes = { n = "gtx" } },
+          clear = { modes = { n = 'gtx' } },
         },
         slash_commands = {
-          ["venv_file"] = {
-            callback = require("codecompanion_overlay.slash.venv_file"),
-            description = "Select a file from the Python venv directory",
-            opts = { provider = "default", contains_code = true },
+          ['venv_file'] = {
+            callback = require 'codecompanion_overlay.slash.venv_file',
+            description = 'Select a file from the Python venv directory',
+            opts = { provider = 'default', contains_code = true },
           },
-          ["file"] = {
-            keymaps = { modes = { i = "<C-f>", n = "<C-f>" } },
+          ['file'] = {
+            keymaps = { modes = { i = '<C-f>', n = '<C-f>' } },
           },
-          ["buffer"] = {
-            keymaps = { modes = { i = "<C-b>", n = "<C-b>" } },
+          ['buffer'] = {
+            keymaps = { modes = { i = '<C-b>', n = '<C-b>' } },
           },
         },
       },
-      inline = { adapter = "copilot" },
+      inline = { adapter = 'copilot' },
     },
     opts = {
       system_prompt = function(opts)
-        local language = opts.language or "English"
-        if opts.adapter.name == "gemini" then
-          return string.format([[You are an AI programming assistant named "CodeCompanion". You are currently plugged into the Neovim text editor on a user's machine.
+        local language = opts.language or 'English'
+        if opts.adapter.name == 'gemini' then
+          return string.format(
+            [[You are an AI programming assistant named "CodeCompanion". You are currently plugged into the Neovim text editor on a user's machine.
 Your personality: Yoda from Star Wars
 
 Your core tasks include:
@@ -85,9 +118,12 @@ You must:
 - Avoid using H1, H2 or H3 headers in your responses as these are reserved for the user.
 - Use actual line breaks in your responses; only use "\n" when you want a literal backslash followed by 'n'.
 - All non-code text responses must be written in the %s language indicated.
-- Multiple, different tools can be called as part of the same response.]], language)
-        elseif opts.adapter.name == "perplexity" then
-          return string.format([[You are an AI programming assistant named "CodeCompanion". You are currently plugged into the Neovim text editor on a user's machine.
+- Multiple, different tools can be called as part of the same response.]],
+            language
+          )
+        elseif opts.adapter.name == 'perplexity' then
+          return string.format(
+            [[You are an AI programming assistant named "CodeCompanion". You are currently plugged into the Neovim text editor on a user's machine.
 Your personality: Respond as Captain(!) Jack Sparrow, like he be talking to his friends in the movie.
 
 Your core tasks include:
@@ -115,10 +151,13 @@ You must:
 - Avoid using H1, H2 or H3 headers in your responses as these are reserved for the user.
 - Use actual line breaks in your responses; only use "\n" when you want a literal backslash followed by 'n'.
 - All non-code text responses must be written in the %s language indicated.
-- Multiple, different tools can be called as part of the same response.]], language)
+- Multiple, different tools can be called as part of the same response.]],
+            language
+          )
         end
 
-        return string.format([[You are an AI programming assistant named "CodeCompanion". You are currently plugged into the Neovim text editor on a user's machine.
+        return string.format(
+          [[You are an AI programming assistant named "CodeCompanion". You are currently plugged into the Neovim text editor on a user's machine.
 
 Your core tasks include:
 - Answering general programming questions.
@@ -152,10 +191,12 @@ When given a task:
 2. Output the final code in a single code block, ensuring that only relevant code is included.
 3. End your response with a short suggestion for the next user turn that directly supports continuing the conversation.
 4. Provide exactly one complete reply per conversation turn.
-5. If necessary, execute multiple tools in a single turn.]], language)
+5. If necessary, execute multiple tools in a single turn.]],
+          language
+        )
       end,
     },
-  })
+  }
 end
 
 return M
