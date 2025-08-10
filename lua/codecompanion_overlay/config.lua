@@ -21,7 +21,7 @@ function M.setup()
       openai_gpt5 = function()
         return require('codecompanion.adapters').extend('openai', {
           env = {
-            api_key = 'cmd:op read "op://Personal/OpenAI API key NeovimCodeCompanion/password" --no-newline',
+            api_key = 'cmd:op read op://Personal/openai_api_key_neovim_codecompanion/password --no-newline',
           },
           schema = {
             model = { default = 'gpt-5' },
@@ -32,7 +32,7 @@ function M.setup()
       openai_gpt5_mini = function()
         return require('codecompanion.adapters').extend('openai', {
           env = {
-            api_key = 'cmd:op read "op://Personal/OpenAI API key NeovimCodeCompanion/password" --no-newline',
+            api_key = 'cmd:op read op://Personal/openai_api_key_neovim_codecompanion/password --no-newline',
           },
           schema = {
             model = { default = 'gpt-5-mini' },
@@ -43,7 +43,7 @@ function M.setup()
       openai_gpt5_nano = function()
         return require('codecompanion.adapters').extend('openai', {
           env = {
-            api_key = 'cmd:op read "op://Personal/OpenAI API key NeovimCodeCompanion/password" --no-newline',
+            api_key = 'cmd:op read op://Personal/openai_api_key_neovim_codecompanion/password --no-newline',
           },
           schema = {
             model = { default = 'gpt-5-nano' },
