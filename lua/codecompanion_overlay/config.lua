@@ -70,10 +70,11 @@ function M.setup()
           clear = { modes = { n = 'gtx' } },
         },
         slash_commands = {
-          ['venv_file'] = {
+          ['context_file'] = {
             callback = require 'codecompanion_overlay.slash.venv_file',
-            description = 'Select a file from the Python venv directory',
+            description = 'Select a file from pre-configured directories',
             opts = { provider = 'default', contains_code = true },
+            keymaps = { modes = { i = '<C-i>', n = '<C-i>' } },
           },
           ['file'] = {
             keymaps = { modes = { i = '<C-f>', n = '<C-f>' } },
